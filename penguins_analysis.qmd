@@ -440,6 +440,50 @@ gentoo_adelie_penguins_data_joined <- full_join(gentoo_penguins_data_from_url, a
 
 1.  Create a boxplot of body mass by species & make the plot interactive
     1.  Hint: geom_boxplot(), ggplotly()
-2.  How many penguins live on Torgersen Island?
-3.  Create a dataframe that has the average culmen depth for each species
+
+```{r}
+box_plot <- ggplot(penguins_data_from_csv, aes(x = species, y = body_mass_g, fill = species)) +
+  geom_boxplot() +
+  theme_bw() +
+  labs(title = "Penguin body mass by species",
+       x = "Species",
+       y = "body mass (g)") +
+  coord_flip() +
+theme(legend.position = "none")
+
+```
+
+```{r}
+ggplotly(box_plot)
+```
+
+1.  How many penguins live on Torgersen Island?
+
+```{r}
+penguins_data_from_csv %>%
+  filter(island == "Torgersen") %>%
+  count(island)
+```
+
+1.  Create a dataframe that has the average culmen depth for each species
     1.  Make a bar plot of the new dataframe with species on the x axis and average culmen depth on the y axis
+
+```{r}
+average_species_culmen_depth <- penguins_data_from_csv %>%
+  group_by(species) %>%
+  summarise(average_culmen_depth = mean(culmen_depth_mm, na.rm = TRUE))
+```
+
+```{r}
+ggplot(data = average_species_culmen_depth, aes(x = species, y = average_culmen_depth, fill = species)) +
+  geom_bar(stat = "identity") +
+  theme_bw() +
+  scale_fill_viridis_d() +
+  coord_flip() +
+  theme(legend.position = "none") +
+  labs(
+    title = "Average penguin culmen depth by species",
+    y = "Average Culmen Depth (mm)",
+    x = "Species"
+  )
+```
