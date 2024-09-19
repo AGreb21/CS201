@@ -16,7 +16,7 @@ penguins <- read_csv(here("data/penguins_lter.csv"))
 ```
 
 ```{r}
-
+penguins <- palmerpenguins::penguins
 ```
 
 ## 3. Filter()
@@ -26,25 +26,244 @@ penguins <- read_csv(here("data/penguins_lter.csv"))
 Use `filter()` to create a subset from `penguins` that only contains gentoo penguins with a bill depth greater than or equal to 15.5 millimeters.
 
 ```{r}
+gentoo_penguins_long_bill <- penguins %>%
+  filter(species == "Gentoo", bill_depth_mm >= 15.5)
+```
+
+```{r}
+ggplot(gentoo_penguins_long_bill, aes(x= bill_depth_mm, y = bill_length_mm, fill = bill_depth_mm)) +
+  geom_bar(stat = "identity")
+```
+
+####  **Practice Activity 2**
+
+Use `filter()` to create a subset from `penguins` that contains observations for male penguins recorded at Dream and Biscoe Islands.
+
+```{r}
 penguins %>%
-  filter(species == "Gentoo penguin (Pygoscelis papua)", bill_depth_mm >= 15.5)
+  filter(sex == "male", island == "Dream" | island == "Biscoe")
 ```
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+####  **Practice Activity 3**
 
-## Running Code
-
-When you click the **Render** button a document will be generated that includes both content and the output of embedded code. You can embed code like this:
+Use `filter()` to create a subset from `penguins` that contains observations for female Adelie penguins with bill lengths less than 35 mm.
 
 ```{r}
-1 + 1
+penguins %>%
+  filter(species == "Adelie", sex == "female", bill_length_mm < 35)
 ```
 
-You can add options to executable code like this
+####  **Practice Activity 4**
+
+Create a subset from `penguins` containing observations for female chinstrap penguins on Dream and Torgersen Islands.
 
 ```{r}
-#| echo: false
-2 * 2
+penguins %>%
+  filter(species == "Chinstrap", sex == "female", island == "Dream" | island == "Torgersen")
+
 ```
 
-The `echo: false` option disables the printing of code (only output is displayed).
+####  **Practice Activity 5**
+
+Create a subset from `penguins` that contains penguins that are either gentoos **OR** have a body mass greater than 4500 g.
+
+```{r}
+large_gentoos <- penguins %>%
+  filter(species == "Gentoo" | body_mass_g > 4500)
+```
+
+```{r}
+min(large_gentoos$body_mass_g, na.rm = TRUE)
+```
+
+## 4. Select()
+
+####  **Practice Activity 1**
+
+Starting with the `penguins` data, only keep the `body_mass_g` variable.
+
+```{r}
+penguins %>%
+  select(body_mass_g)
+```
+
+####  **Practice Activity 2**
+
+Starting with the `penguins` data, keep columns from `bill_length_mm` to `body_mass_g`, and `year`
+
+```{r}
+penguins %>%
+  select(bill_length_mm:body_mass_g, year)
+```
+
+####  **Practice Activity 3**
+
+Starting with the `penguins` data, keep all columns except `island`
+
+```{r}
+penguins %>%
+  select(-island)
+```
+
+####  **Practice Activity 4**
+
+From `penguins`, keep all variables *except* `species`, `sex` and `year`.
+
+```{r}
+penguins %>%
+  select(!c(species, sex, year))
+```
+
+####  **Practice Activity 5**
+
+From `penguins`, keep the `species` column and any columns that end with “mm”.
+
+```{r}
+penguins %>%
+  select(species, ends_with("mm"))
+```
+
+####  **Practice Activity 6**
+
+From `penguins`, keep any columns that contain “bill” OR end with “mm”.
+
+```{r}
+penguins %>%
+  select(ends_with("mm") | contains("bill"))
+```
+
+#### **Practice Activity 7**
+
+In a piped sequence, starting from `penguins`:
+
+-   Only keep observations for female penguins observed on Dream Island, THEN…
+
+-   Keep variables `species`, and any variable starting with “bill”
+
+```{r}
+penguins %>%
+  filter(sex == "female", island == "Dream") %>%
+  select(species, starts_with("bill"))
+```
+
+## 5. Relocate()
+
+####  **Practice Activity 1**
+
+Starting with `penguins`, move the `species` variable to before the `sex` variable.
+
+```{r}
+penguins %>%
+  relocate(species, .before = sex)
+```
+
+####  **Practice Activity 2**
+
+Starting with `penguins`, relocate the `bill_length_mm` variable so that it is the first column.
+
+```{r}
+penguins %>%
+  relocate(bill_length_mm)
+```
+
+####  **Practice Activity 3**
+
+Move any factor variables (hint: `is.factor`) to after any integer variables (`is.integer`).
+
+```{r}
+penguins %>%
+  relocate(where(is.factor), .after = where(is.integer))
+```
+
+## 6. Rename()
+
+####  **Practice Activity 1**
+
+Starting with `penguins`, rename the `flipper_length_mm` column to `flipper_mm`.
+
+```{r}
+penguins %>%
+  rename(flipper_mm = flipper_length_mm)
+```
+
+####  **Practice Activity 2**
+
+Starting with `penguins`, rename the `island` column to `island_name` and the `species` column to `penguin_spp`.
+
+```{r}
+penguins %>%
+  rename(island_name = island,
+         penguin_spp = species)
+```
+
+#### **Practice Activity 3**
+
+Starting with `penguins`, convert any column names that start with “bill” to upper case.
+
+```{r}
+penguins %>%
+  rename_with(toupper, starts_with("bill"))
+```
+
+## 7. Mutate()
+
+####  **Practice Activity 1**
+
+Add a column to `penguins` that contains a new column `flipper_m`, which is the `flipper_length_mm` (flipper length in millimeters) converted to units of meters.
+
+```{r}
+penguins %>%
+  mutate(flipper_m = flipper_length_mm / 1000)
+```
+
+####  **Practice Activity 2**
+
+The `year` column in `penguins` is currently an integer. Add a new column named `year_fct` that is the year converted to a factor (hint: `as.factor()`).
+
+```{r}
+penguins %>%
+  mutate(year_fct = as.factor(year))
+```
+
+####  **Practice Activity 3**
+
+To `penguins`, add a new column `mass_lb` that contains penguin body mass, currently in grams, converted to pounds (1 gram = 0.0022 lb).
+
+```{r}
+penguins %>%
+  mutate(mass_lb = body_mass_g *.0022)
+```
+
+#### **Practice Activity 4**
+
+Starting with `penguins`, do the following within a single `mutate()` function:
+
+-   Convert the `species` variable to a character
+
+-   Add a new column (called `flipper_cm` with flipper length in centimeters)
+
+-   Convert the `island` column to lowercase
+
+```{r}
+penguins %>%
+  mutate(species = as.character(species),
+         flipper_cm = flipper_length_mm / 10,
+         island = tolower(island))
+```
+
+## 8. **Group_by() %\>% summarize()**
+
+####  **Practice Activity 1**
+
+Starting with `penguins`, create a summary table containing the maximum and minimum length of flippers (call the columns `flip_max` and `flip_min`) for chinstrap penguins, grouped by island.
+
+```{r}
+penguins %>%
+  
+```
+
+## 9. Across()
+
+## 10. Count()
+
+## 11. Case_when()
