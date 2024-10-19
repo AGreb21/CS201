@@ -111,7 +111,7 @@ How many categorical variables are there? **4**
 
 How many Numeric variables are there? **24**
 
-What are some variables of interest to you? **Batting Average, OPS+,**
+What are some variables of interest to you? **Batting Average, OPS+,** HR, SB
 
 What kinds of questions could you explore with this data?
 
