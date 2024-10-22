@@ -154,4 +154,4 @@ ggplot(pokedata, aes(y = sp_def)) +
 
 -   How do you read a boxplot, and what are the different landmarks?
 
-line is the mean, box encloses the inner quartile range and the "whiskers" extend to the minimum and maximum values excluding outliers that are shown as points.
+the line is the median, box encloses the inner quartile range which means the point at 1 quarter and 3 quarters of the data and the "whiskers" extend to the minimum and maximum values excluding outliers that are shown as points.
