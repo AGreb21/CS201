@@ -116,5 +116,3 @@ What are some variables of interest to you? **Batting Average, OPS+,** HR, SB
 What kinds of questions could you explore with this data?
 
 -   How did he regress as he aged
-
--   

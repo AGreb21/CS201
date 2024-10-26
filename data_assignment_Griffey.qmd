@@ -1,0 +1,57 @@
+---
+title: "data_assignment_Griffey"
+format: html
+editor: visual
+---
+
+## 
+
+```{r, message=FALSE}
+library(tidyverse)
+library(here)
+library(janitor)
+library(ggplot2)
+```
+
+## 
+
+### Data
+
+```{r}
+griffeydata <- read_csv(here("data/KenGriffyJr.csv"))
+```
+
+### Describe the data:
+
+Data author: **Jarred Priester**
+
+Description: The career MLB stats of Ken Griffey Jr.
+
+How many observations (rows) are there? 24
+
+How many variables (columns) are there? 28
+
+### Summary: Quick overview
+
+```{r}
+skim_griffey <- skimr::skim(griffeydata)
+summary(griffeydata)
+```
+
+### Categorical vs. Numeric
+
+```{r}
+griffeydata$Year <- as.factor(griffeydata$Year)
+griffeydata$Age <- as.factor(griffeydata$Age)
+summary(griffeydata)
+```
+
+How many categorical variables are there? **4**
+
+How many Numeric variables are there? **24**
+
+What are some variables of interest to you? **Batting Average, OPS+,** HR, SB
+
+What kinds of questions could you explore with this data?
+
+-   How did he regress as he aged
