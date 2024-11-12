@@ -301,7 +301,10 @@ interactive_no_use_discharge_map <- ggplot(percent_no_use_discharge_map) +
     legend.title = element_text(size = 5)
   ) 
 
-interactive_no_use_discharge_map
+#interactive_no_use_discharge_map
 # Use `girafe` to render the interactive plot
-#girafe(ggobj = interactive_no_use_discharge_map)
+girafe(ggobj = interactive_no_use_discharge_map)
 ```
+
+2.  How does the percentage of treatments being completed & percentage of treatments ending with no use vary by the service and length of stay. Create at least 3 visualizations to try and answer this question
+    -   instead of organizing/grouping by states, group into the LOS and service given
