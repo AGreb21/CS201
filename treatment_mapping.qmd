@@ -328,7 +328,7 @@ no_use_by_services <- teds_d_select %>%
 ```
 
 ```{r}
-ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_completed)) +
+ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_completed, fill = services_d)) +
   geom_bar(stat = "identity")+
   labs(
     title = "Percentage of Cases Completed by Services Received",
@@ -340,7 +340,7 @@ ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_completed))
 ```
 
 ```{r}
-ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_no_use)) +
+ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_no_use, fill = services_d)) +
   geom_bar(stat = "identity")+
   labs(
     title = "Percentage of Cases Completed, Ending with No Use at Discharge by Services Received",
@@ -370,7 +370,7 @@ no_use_by_los <- teds_d_select %>%
 ```
 
 ```{r}
-ggplot(data = no_use_by_los, aes(x = los, y = percentage_completed)) +
+ggplot(data = no_use_by_los, aes(x = los, y = percentage_completed, fill = los)) +
   geom_bar(stat = "identity")+
   labs(
     title = "Percentage of Cases Completed by Length of Stay",
@@ -381,7 +381,7 @@ ggplot(data = no_use_by_los, aes(x = los, y = percentage_completed)) +
 ```
 
 ```{r}
-ggplot(data = no_use_by_los, aes(x = los, y = percentage_no_use)) +
+ggplot(data = no_use_by_los, aes(x = los, y = percentage_no_use, fill = los)) +
   geom_bar(stat = "identity")+
   labs(
     title = "Percentage of Cases Completed, Ending with No Use at Discharge by Length of Stay",
