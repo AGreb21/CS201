@@ -15,6 +15,7 @@ library(urbnmapr)
 library(naniar)
 library(janitor)
 library(ggiraph)
+library(plotly)
 options(scipen = 99)
 ```
 
@@ -207,6 +208,7 @@ interactive_completed_treatment_map <- ggplot(percent_completed_by_state_map) +
   coord_sf(datum = NA) +
   theme_minimal()
 
+interactive_completed_treatment_map
 # Use `girafe` to render the interactive plot
 #girafe(ggobj = interactive_completed_treatment_map)
 
@@ -301,10 +303,94 @@ interactive_no_use_discharge_map <- ggplot(percent_no_use_discharge_map) +
     legend.title = element_text(size = 5)
   ) 
 
-#interactive_no_use_discharge_map
+interactive_no_use_discharge_map
 # Use `girafe` to render the interactive plot
-girafe(ggobj = interactive_no_use_discharge_map)
+#girafe(ggobj = interactive_no_use_discharge_map)
 ```
 
 2.  How does the percentage of treatments being completed & percentage of treatments ending with no use vary by the service and length of stay. Create at least 3 visualizations to try and answer this question
     -   instead of organizing/grouping by states, group into the LOS and service given
+
+```{r}
+unique(teds_d_select$services_d)
+```
+
+```{r}
+no_use_by_services <- teds_d_select %>%
+  group_by(services_d) %>%
+  summarize(
+    total_cases = n(),
+    completed_cases = sum(reason == "completed", na.rm = TRUE),
+    completed_no_use_discharge = sum(freq1_d == "no use" & reason == "completed", na.rm = TRUE)
+  ) %>%
+  mutate(percentage_no_use = (completed_no_use_discharge / completed_cases) * 100) %>%
+  mutate(percentage_completed = (completed_cases / total_cases) * 100)
+```
+
+```{r}
+ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_completed)) +
+  geom_bar(stat = "identity")+
+  labs(
+    title = "Percentage of Cases Completed by Services Received",
+    x = "Service Received",
+    y = "Percentage of Completed Cases"
+  ) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+ggplot(data = no_use_by_services, aes(x = services_d, y = percentage_no_use)) +
+  geom_bar(stat = "identity")+
+  labs(
+    title = "Percentage of Cases Completed, Ending with No Use at Discharge by Services Received",
+    x = "Service Received",
+    y = "Percentage of Completed Cases ending in no use"
+  ) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+```
+
+```{r}
+
+```
+
+```{r}
+no_use_by_los <- teds_d_select %>%
+  group_by(los) %>%
+  summarize(
+    total_cases = n(),
+    completed_cases = sum(reason == "completed", na.rm = TRUE),
+    completed_no_use_discharge = sum(freq1_d == "no use" & reason == "completed", na.rm = TRUE)
+  ) %>%
+  mutate(percentage_no_use = (completed_no_use_discharge / completed_cases) * 100) %>%
+
+  mutate(percentage_completed = (completed_cases / total_cases) * 100)
+```
+
+```{r}
+ggplot(data = no_use_by_los, aes(x = los, y = percentage_completed)) +
+  geom_bar(stat = "identity")+
+  labs(
+    title = "Percentage of Cases Completed by Length of Stay",
+    x = "Length of Stay",
+    y = "Percentage of Completed Cases"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+ggplot(data = no_use_by_los, aes(x = los, y = percentage_no_use)) +
+  geom_bar(stat = "identity")+
+  labs(
+    title = "Percentage of Cases Completed, Ending with No Use at Discharge by Length of Stay",
+    x = "Length of Stay",
+    y = "Percentage of Completed Cases ending in no use"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+```
+
+```{r}
+
+```
