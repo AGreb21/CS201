@@ -20,8 +20,8 @@ library(here)
 #### Read in the list of topics
 
 ```{r, message=FALSE}
-topics <- read_csv("cs201_topics.csv")
-view(topics)
+#topics <- read_csv("cs201_topics.csv")
+#view(topics)
 
 # anything to edit?
 #topics[#, "topic"] <- 
@@ -30,26 +30,26 @@ view(topics)
 #### Read in the list of student names
 
 ```{r, message=FALSE}
-names <- read_csv("cs201_names.csv")
-view(names)
+#names <- read_csv("cs201_names.csv")
+#view(names)
 ```
 
 #### Generate a random number in the names dataframe
 
 ```{r, message=FALSE}
-names <- names %>%
-  mutate(number = sample(1:8, nrow(names), replace = FALSE))
+#names <- names %>%
+ # mutate(number = sample(1:8, nrow(names), replace = FALSE))
 
-view(names)
+#view(names)
 ```
 
 #### Join the names to the topics
 
-```{r, message=FALSE}
-assigned_topics <- names %>%
-  full_join(topics, by = "number")
+```{#{r, message=FALSE}
+#assigned_topics <- names %>%
+#  full_join(topics, by = "number")
 
-view(assigned_topics)
+#view(assigned_topics)
 ```
 
 ### Instructions
@@ -78,9 +78,45 @@ penguins <- penguins %>%
   clean_names()
 ```
 
-#### {Insert topic here}
+#### {Filter}
 
+Filter by categorical variable
 ```{r, message=FALSE}
-# insert code snippet here
-
+penguins %>%
+  filter(sex == "MALE")
 ```
+
+
+```{r}
+penguins %>% 
+  filter(species == "Adelie Penguin (Pygoscelis adeliae)")
+```
+
+
+Add to it's own dataframe
+```{r}
+female_penguins <- penguins %>%
+  filter(sex == "FEMALE")
+```
+
+Filter by numeric Variable
+```{r}
+penguins %>%
+  filter(flipper_length_mm >= 200)
+```
+
+Filter by multiple variables
+```{r}
+penguins %>%
+  filter(flipper_length_mm < 200, sex == "MALE")
+```
+
+```{r}
+penguins %>%
+  filter( species == "Adelie Penguin (Pygoscelis adeliae)", island == "Biscoe" | island == "Torgersen")
+```
+
+
+
+
+
