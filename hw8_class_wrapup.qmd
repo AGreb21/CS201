@@ -111,6 +111,7 @@ penguins %>%
   filter(flipper_length_mm < 200, sex == "MALE")
 ```
 
+Filter for multiple of the same variable
 ```{r}
 penguins %>%
   filter( species == "Adelie Penguin (Pygoscelis adeliae)", island == "Biscoe" | island == "Torgersen")
